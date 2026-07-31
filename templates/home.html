@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+Hifadhi
+{% endblock %}
+
+{% block content %}
+
+<header>
+    <h1>Hifadhi</h1>
+    <p>Student Information Management System</p>
+</header>
+
+<hr>
+
+<h2>Dashboard</h2>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Students</h3>
+        <p>{{ total_students }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Areas</h3>
+        <p>0</p>
+    </div>
+
+    <div class="card">
+        <h3>Schools</h3>
+        <p>0</p>
+    </div>
+
+</div>
+
+{% endblock %}

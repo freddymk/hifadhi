@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Student Profile
+{% endblock %}
+
+{% block content %}
+
+<h2>Student Profile</h2>
+
+<p><strong>Student ID:</strong> {{ student.student_id }}</p>
+
+<p><strong>First Name:</strong> {{ student.first_name }}</p>
+
+<p><strong>Last Name:</strong> {{ student.last_name }}</p>
+
+<p><strong>Email:</strong> {{ student.email }}</p>
+
+<p><strong>Area:</strong> {{ student.area }}</p>
+
+<br>
+
+<a href="/students/" class="button">← Back to Students</a>
+
+{% endblock %}

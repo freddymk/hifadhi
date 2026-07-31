@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Student
+{% endblock %}
+
+{% block content %}
+
+<h1>Add Student</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <p>
+        Student ID:<br>
+        <input type="text" name="student_id" required>
+    </p>
+
+    <p>
+        First Name:<br>
+        <input type="text" name="first_name" required>
+    </p>
+
+    <p>
+        Last Name:<br>
+        <input type="text" name="last_name" required>
+    </p>
+
+    <p>
+        Email:<br>
+        <input type="email" name="email">
+    </p>
+
+    <p>
+        Area:<br>
+        <input type="text" name="area">
+    </p>
+
+    <button type="submit">Save Student</button>
+
+</form>
+
+{% endblock %}

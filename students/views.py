@@ -1,15 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Student
 from .forms import StudentForm
-from django.shortcuts import render, redirect
 
 
 def home(request):
     total_students = Student.objects.count()
+
     context = {
-        'total_students': total_students,
+        "total_students": total_students,
     }
-    return render(request, 'home.html', context)
+
+    return render(request, "home.html", context)
+
 
 def student_list(request):
     students = Student.objects.all()
@@ -20,10 +22,10 @@ def student_list(request):
 
     return render(request, "students.html", context)
 
-def add_student(request):
 
+def add_student(request):
     if request.method == "POST":
-        form = StudentForm(request.POST)
+        form = StudentForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
@@ -32,28 +34,49 @@ def add_student(request):
     else:
         form = StudentForm()
 
-    return render(request, "add_student.html", {"form": form})
+    return render(request, "add_student.html", {
+        "form": form
+    })
 
-def add_student(request):
-    if request.method == "POST":
-        student = Student(
-            student_id=request.POST["student_id"],
-            first_name=request.POST["first_name"],
-            last_name=request.POST["last_name"],
-            email=request.POST["email"],
-            area=request.POST["area"],
-        )
-        student.save()
-
-        return redirect("/students/")
-
-    return render(request, "add_student.html")
 
 def student_detail(request, student_id):
-    student = Student.objects.get(id=student_id)
+    student = get_object_or_404(Student, id=student_id)
 
-    context = {
+    return render(request, "student_detail.html", {
+        "student": student
+    })
+
+
+def edit_student(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+
+    if request.method == "POST":
+        form = StudentForm(
+            request.POST,
+            request.FILES,
+            instance=student
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect("student_detail", student_id=student.id)
+
+    else:
+        form = StudentForm(instance=student)
+
+    return render(request, "edit_student.html", {
+        "form": form,
         "student": student,
-    }
+    })
 
-    return render(request, "student_detail.html", context)
+
+def delete_student(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+
+    if request.method == "POST":
+        student.delete()
+        return redirect("student_list")
+
+    return render(request, "delete_student.html", {
+        "student": student,
+    })

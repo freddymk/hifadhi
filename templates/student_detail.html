@@ -8,6 +8,15 @@ Student Profile
 
 <h2>Student Profile</h2>
 
+{% if student.profile_picture %}
+    <img src="{{ student.profile_picture.url }}"
+         alt="Profile Picture"
+         width="180"
+         style="border-radius:10px; margin-bottom:20px;">
+{% else %}
+    <p><strong>No profile picture uploaded.</strong></p>
+{% endif %}
+
 <p><strong>Student ID:</strong> {{ student.student_id }}</p>
 
 <p><strong>First Name:</strong> {{ student.first_name }}</p>
@@ -20,6 +29,16 @@ Student Profile
 
 <br>
 
-<a href="/students/" class="button">← Back to Students</a>
+<a href="{% url 'edit_student' student.id %}" class="button">
+    ✏ Edit Student
+</a>
+
+<a href="{% url 'delete_student' student.id %}" class="button">
+    Delete Student
+</a>
+
+<a href="{% url 'student_list' %}" class="button">
+    ← Back to Students
+</a>
 
 {% endblock %}

@@ -12,4 +12,6 @@ urlpatterns = [
 
     # Student profile
     path("students/<int:student_id>/", views.student_detail, name="student_detail"),
+    path("students/<int:student_id>/edit/", views.edit_student, name="edit_student"),
+    path("students/<int:student_id>/delete/", views.delete_student, name="delete_student"),
 ]

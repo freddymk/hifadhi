@@ -5,5 +5,11 @@ from .models import Student
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = "__all__"
-        
+        fields = [
+            "student_id",
+            "first_name",
+            "last_name",
+            "email",
+            "area",
+            "profile_picture",
+        ]

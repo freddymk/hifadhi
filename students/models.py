@@ -8,5 +8,12 @@ class Student(models.Model):
     last_name = models.CharField(max_length=100)
     email = models.EmailField()
     area = models.CharField(max_length=100, blank=True)
+    
+    profile_picture = models.ImageField(
+    upload_to="students/",
+    blank=True,
+    null=True
+)
+    
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

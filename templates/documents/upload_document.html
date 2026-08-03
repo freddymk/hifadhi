@@ -2,15 +2,18 @@
 
 {% block content %}
 
-<h1>Add Student</h1>
+<h1>Upload Document</h1>
+
+<h3>{{ student.first_name }} {{ student.last_name }}</h3>
 
 <form method="POST" enctype="multipart/form-data">
+
     {% csrf_token %}
 
     {{ form.as_p }}
 
-    <button type="submit" class="btn">
-        Save Student
+    <button type="submit">
+        Upload Document
     </button>
 
 </form>

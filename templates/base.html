@@ -18,8 +18,9 @@
     <ul>
         <li><a href="/">Dashboard</a></li>
         <a href="/students/">Students</a>
-        <li><a href="#">Areas</a></li>
+        <li><a href="{% url 'area_list' %}">Areas</a></li>
         <li><a href="/admin/">Admin</a></li>
+        <a href="{% url 'logout' %}">Logout</a>
     </ul>
 </nav>
 

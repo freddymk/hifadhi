@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+
+<div style="max-width:400px; margin:60px auto;">
+
+    <h2>Hifadhi Login</h2>
+
+    {% if form.errors %}
+        <p style="color:red;">
+            Invalid username or password.
+        </p>
+    {% endif %}
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <p>
+            <label>Username</label><br>
+            {{ form.username }}
+        </p>
+
+        <p>
+            <label>Password</label><br>
+            {{ form.password }}
+        </p>
+
+        <button type="submit" class="button">
+            Login
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

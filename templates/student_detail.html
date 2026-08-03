@@ -1,44 +1,88 @@
 {% extends "base.html" %}
 
-{% block title %}
-Student Profile
-{% endblock %}
-
 {% block content %}
 
-<h2>Student Profile</h2>
+<h1>Student Profile</h1>
 
 {% if student.profile_picture %}
-    <img src="{{ student.profile_picture.url }}"
-         alt="Profile Picture"
-         width="180"
-         style="border-radius:10px; margin-bottom:20px;">
-{% else %}
-    <p><strong>No profile picture uploaded.</strong></p>
+<img src="{{ student.profile_picture.url }}"
+     width="180"
+     style="border-radius:10px;">
 {% endif %}
 
+<hr>
+
 <p><strong>Student ID:</strong> {{ student.student_id }}</p>
-
-<p><strong>First Name:</strong> {{ student.first_name }}</p>
-
-<p><strong>Last Name:</strong> {{ student.last_name }}</p>
-
+<p><strong>Name:</strong> {{ student.first_name }} {{ student.last_name }}</p>
+<p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
 <p><strong>Email:</strong> {{ student.email }}</p>
-
+<p><strong>University:</strong> {{ student.university }}</p>
+<p><strong>Course:</strong> {{ student.course }}</p>
+<p><strong>Year of Study:</strong> {{ student.year_of_study }}</p>
+<p><strong>Expected Graduation:</strong> {{ student.expected_graduation_date }}</p>
 <p><strong>Area:</strong> {{ student.area }}</p>
+
+<hr>
+
+<h2>Documents</h2>
+
+<a href="{% url 'upload_document' student.id %}">
+    Upload Document
+</a>
+
+<br><br>
+
+{% if student.documents.all %}
+
+<table border="1" cellpadding="8">
+
+<tr>
+    <th>Document Type</th>
+    <th>File</th>
+    <th>Uploaded By</th>
+    <th>Date</th>
+</tr>
+
+{% for document in student.documents.all %}
+
+<tr>
+
+<td>{{ document.get_document_type_display }}</td>
+
+<td>
+<a href="{{ document.file.url }}">
+View
+</a>
+</td>
+
+<td>{{ document.uploaded_by }}</td>
+
+<td>{{ document.uploaded_at }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="4">
+
+No documents uploaded.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endif %}
 
 <br>
 
-<a href="{% url 'edit_student' student.id %}" class="button">
-    ✏ Edit Student
-</a>
-
-<a href="{% url 'delete_student' student.id %}" class="button">
-    Delete Student
-</a>
-
-<a href="{% url 'student_list' %}" class="button">
-    ← Back to Students
+<a href="{% url 'edit_student' student.id %}">
+Edit Student
 </a>
 
 {% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Areas</h1>
+
+{% if request.user.is_superuser %}
+<a href="{% url 'add_area' %}" class="btn">
+    + Add Area
+</a>
+{% endif %}
+
+<br><br>
+
+<table>
+    <tr>
+        <th>Area Name</th>
+
+        {% if request.user.is_superuser %}
+        <th>Actions</th>
+        {% endif %}
+    </tr>
+
+    {% for area in areas %}
+    <tr>
+
+        <td>{{ area.name }}</td>
+
+        {% if request.user.is_superuser %}
+        <td>
+            <a href="{% url 'edit_area' area.id %}">Edit</a> |
+            <a href="{% url 'delete_area' area.id %}">Delete</a>
+        </td>
+        {% endif %}
+
+    </tr>
+
+    {% empty %}
+
+    <tr>
+        <td colspan="2">No Areas Found</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Delete Area</h1>
+
+<p>Are you sure you want to delete <strong>{{ area.name }}</strong>?</p>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <button class="btn">
+        Delete
+    </button>
+
+</form>
+
+{% endblock %}

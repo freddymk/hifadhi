@@ -3,24 +3,47 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import Http404
 
+from django.db.models import Q
+
 from .models import Student
 from .forms import StudentForm
 from users.models import UserProfile
+
+from areas.models import Area
+from documents.models import Document
+
+from django.contrib import messages
 
 
 @login_required
 def home(request):
     if request.user.is_superuser:
         total_students = Student.objects.count()
+        total_areas = Area.objects.count()
+        total_documents = Document.objects.count()
     else:
         try:
             profile = request.user.userprofile
-            total_students = Student.objects.filter(area=profile.area).count()
+
+            total_students = Student.objects.filter(
+                area=profile.area
+            ).count()
+
+            total_areas = 1
+
+            total_documents = Document.objects.filter(
+                student__area=profile.area
+            ).count()
+
         except UserProfile.DoesNotExist:
             total_students = 0
+            total_areas = 0
+            total_documents = 0
 
     context = {
         "total_students": total_students,
+        "total_areas": total_areas,
+        "total_documents": total_documents,
     }
 
     return render(request, "home.html", context)
@@ -28,6 +51,8 @@ def home(request):
 
 @login_required
 def student_list(request):
+    search = request.GET.get("search", "")
+
     if request.user.is_superuser:
         students = Student.objects.all()
     else:
@@ -37,8 +62,19 @@ def student_list(request):
         except UserProfile.DoesNotExist:
             students = Student.objects.none()
 
+    if search:
+        students = students.filter(
+            Q(student_id__icontains=search) |
+            Q(first_name__icontains=search) |
+            Q(last_name__icontains=search) |
+            Q(email__icontains=search) |
+            Q(university__icontains=search) |
+            Q(area__name__icontains=search)
+        )
+
     return render(request, "students.html", {
         "students": students,
+        "search": search,
     })
 
 
@@ -55,6 +91,7 @@ def add_student(request):
                 student.area = profile.area
 
             student.save()
+            messages.success(request, "Student added successfully.")
             return redirect("student_list")
 
     else:
@@ -107,6 +144,8 @@ def edit_student(request, student_id):
                 student.area = profile.area
 
             student.save()
+            
+            messages.success(request, "Student updated successfully.")
 
             return redirect("student_detail", student_id=student.id)
 
@@ -131,6 +170,7 @@ def delete_student(request, student_id):
 
     if request.method == "POST":
         student.delete()
+        messages.success(request, "Student deleted successfully.")
         return redirect("student_list")
 
     return render(request, "delete_student.html", {

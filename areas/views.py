@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.http import Http404
 
 from .models import Area
@@ -33,6 +34,9 @@ def add_area(request):
 
         if form.is_valid():
             form.save()
+
+            messages.success(request, "Area created successfully.")
+
             return redirect("area_list")
 
     else:
@@ -55,6 +59,9 @@ def edit_area(request, area_id):
 
         if form.is_valid():
             form.save()
+
+            messages.success(request, "Area updated successfully.")
+
             return redirect("area_list")
 
     else:
@@ -62,6 +69,7 @@ def edit_area(request, area_id):
 
     return render(request, "areas/edit_area.html", {
         "form": form,
+        "area": area,
     })
 
 
@@ -74,6 +82,9 @@ def delete_area(request, area_id):
 
     if request.method == "POST":
         area.delete()
+
+        messages.success(request, "Area deleted successfully.")
+
         return redirect("area_list")
 
     return render(request, "areas/delete_area.html", {

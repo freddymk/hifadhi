@@ -1,37 +1,93 @@
 {% extends "base.html" %}
 
 {% block title %}
-Hifadhi
+Dashboard
 {% endblock %}
 
 {% block content %}
 
 <header>
-    <h1>Hifadhi</h1>
+    <h1>Welcome to EduSave 👋</h1>
     <p>Student Information Management System</p>
 </header>
-
-<hr>
-
-<h2>Dashboard</h2>
 
 <div class="cards">
 
     <div class="card">
-        <h3>Students</h3>
+        <h3>👨 Students</h3>
         <p>{{ total_students }}</p>
     </div>
 
     <div class="card">
-        <h3>Areas</h3>
-        <p>0</p>
+        <h3>🌍 Areas</h3>
+        <p>{{ total_areas }}</p>
     </div>
 
     <div class="card">
-        <h3>Schools</h3>
-        <p>0</p>
+        <h3>📄 Documents</h3>
+        <p>{{ total_documents }}</p>
     </div>
 
 </div>
+
+<br>
+
+<h2>Quick Actions</h2>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Add Student</h3>
+
+        <a href="{% url 'add_student' %}" class="button">
+            Register Student
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>Students</h3>
+
+        <a href="{% url 'student_list' %}" class="button">
+            View Students
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>Areas</h3>
+
+        <a href="{% url 'area_list' %}" class="button">
+            Manage Areas
+        </a>
+    </div>
+
+</div>
+
+<br>
+
+<h2>Recent Activity</h2>
+
+<table>
+
+    <tr>
+        <th>Activity</th>
+        <th>Status</th>
+    </tr>
+
+    <tr>
+        <td>Welcome to EduSave Version 1</td>
+        <td>✅ Ready</td>
+    </tr>
+
+    <tr>
+        <td>Area-based permissions enabled</td>
+        <td>✅ Active</td>
+    </tr>
+
+    <tr>
+        <td>Document uploads available</td>
+        <td>✅ Active</td>
+    </tr>
+
+</table>
 
 {% endblock %}

@@ -1,37 +1,83 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}Hifadhi{% endblock %}</title>
+    <title>{% block title %}EduSave{% endblock %}</title>
 
     {% load static %}
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  </head>
- <body>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
 
 <nav>
-    <div class="logo">Hifadhi</div>
+
+    <div class="logo">
+        EduSave
+    </div>
 
     <ul>
-        <li><a href="/">Dashboard</a></li>
-        <a href="/students/">Students</a>
-        <li><a href="{% url 'area_list' %}">Areas</a></li>
-        <li><a href="/admin/">Admin</a></li>
-        <a href="{% url 'logout' %}">Logout</a>
+
+        <li>
+            <a href="{% url 'home' %}">
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'student_list' %}">
+                Students
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'area_list' %}">
+                Areas
+            </a>
+        </li>
+
+        {% if request.user.is_superuser %}
+        <li>
+            <a href="/admin/">
+                Admin
+            </a>
+        </li>
+        {% endif %}
+
+        <li>
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+        </li>
+
     </ul>
+
 </nav>
 
 <main>
 
-{% block content %}
-{% endblock %}
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
 
 </main>
 
 <script src="{% static 'js/main.js' %}"></script>
 
 </body>
+
 </html>

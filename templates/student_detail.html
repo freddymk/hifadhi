@@ -1,88 +1,103 @@
 {% extends "base.html" %}
 
+{% block title %}
+Student Profile
+{% endblock %}
+
 {% block content %}
 
 <h1>Student Profile</h1>
 
-{% if student.profile_picture %}
-<img src="{{ student.profile_picture.url }}"
-     width="180"
-     style="border-radius:10px;">
-{% endif %}
+<div class="student-profile">
+
+    <div class="student-photo">
+
+        {% if student.profile_picture %}
+            <img src="{{ student.profile_picture.url }}" alt="Profile Picture">
+        {% else %}
+            <img src="https://via.placeholder.com/180?text=No+Photo" alt="No Photo">
+        {% endif %}
+
+    </div>
+
+    <div class="student-info">
+
+        <h2>{{ student.first_name }} {{ student.last_name }}</h2>
+
+        <p><strong>Student ID:</strong> {{ student.student_id }}</p>
+        <p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
+        <p><strong>Email:</strong> {{ student.email }}</p>
+        <p><strong>University:</strong> {{ student.university }}</p>
+        <p><strong>Course:</strong> {{ student.course }}</p>
+        <p><strong>Year of Study:</strong> {{ student.year_of_study }}</p>
+        <p><strong>Expected Graduation:</strong> {{ student.expected_graduation_date }}</p>
+        <p><strong>Area:</strong> {{ student.area }}</p>
+
+        <br>
+
+        <a href="{% url 'edit_student' student.id %}" class="button">
+            ✏ Edit Student
+        </a>
+
+        <a href="{% url 'upload_document' student.id %}" class="button">
+            📄 Upload Document
+        </a>
+
+        {% if request.user.is_superuser %}
+        <a href="{% url 'delete_student' student.id %}" class="button">
+            🗑 Delete Student
+        </a>
+        {% endif %}
+
+    </div>
+
+</div>
 
 <hr>
 
-<p><strong>Student ID:</strong> {{ student.student_id }}</p>
-<p><strong>Name:</strong> {{ student.first_name }} {{ student.last_name }}</p>
-<p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
-<p><strong>Email:</strong> {{ student.email }}</p>
-<p><strong>University:</strong> {{ student.university }}</p>
-<p><strong>Course:</strong> {{ student.course }}</p>
-<p><strong>Year of Study:</strong> {{ student.year_of_study }}</p>
-<p><strong>Expected Graduation:</strong> {{ student.expected_graduation_date }}</p>
-<p><strong>Area:</strong> {{ student.area }}</p>
+<h2>Student Documents</h2>
 
-<hr>
+<table>
 
-<h2>Documents</h2>
+    <tr>
+        <th>Document</th>
+        <th>View</th>
+        <th>Uploaded By</th>
+        <th>Date Uploaded</th>
+    </tr>
 
-<a href="{% url 'upload_document' student.id %}">
-    Upload Document
-</a>
+    {% for document in student.documents.all %}
 
-<br><br>
+    <tr>
 
-{% if student.documents.all %}
+        <td>{{ document.get_document_type_display }}</td>
 
-<table border="1" cellpadding="8">
+        <td>
+            <a href="{{ document.file.url }}" target="_blank">
+                📄 Open
+            </a>
+        </td>
 
-<tr>
-    <th>Document Type</th>
-    <th>File</th>
-    <th>Uploaded By</th>
-    <th>Date</th>
-</tr>
+        <td>{{ document.uploaded_by }}</td>
 
-{% for document in student.documents.all %}
+        <td>{{ document.uploaded_at|date:"d M Y" }}</td>
 
-<tr>
+    </tr>
 
-<td>{{ document.get_document_type_display }}</td>
+    {% empty %}
 
-<td>
-<a href="{{ document.file.url }}">
-View
-</a>
-</td>
+    <tr>
 
-<td>{{ document.uploaded_by }}</td>
+        <td colspan="4">
 
-<td>{{ document.uploaded_at }}</td>
+            No documents uploaded yet.
 
-</tr>
+        </td>
 
-{% empty %}
+    </tr>
 
-<tr>
-
-<td colspan="4">
-
-No documents uploaded.
-
-</td>
-
-</tr>
-
-{% endfor %}
+    {% endfor %}
 
 </table>
-
-{% endif %}
-
-<br>
-
-<a href="{% url 'edit_student' student.id %}">
-Edit Student
-</a>
 
 {% endblock %}
